@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Movie Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>Rate a few films, get your next watch</h1>
+    <p class="lede">Rate at least 5 movies you've seen. We find users with similar taste and recommend what they loved.</p>
+    <input id="filter" type="search" placeholder="Filter movies by title" aria-label="Filter movies">
+    <form method="post" action="/recommend">
+      <ul id="list">
+        {% for id, title in movies %}
+        <li>
+          <span>{{ title }}</span>
+          <select name="rating_{{ id }}" aria-label="Rating for {{ title }}">
+            <option value="">Not seen</option>
+            {% for r in [5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1, 0.5] %}<option value="{{ r }}">{{ r }} stars</option>{% endfor %}
+          </select>
+        </li>
+        {% endfor %}
+      </ul>
+      <button type="submit">Get recommendations</button>
+    </form>
+  </main>
+  <script>
+    document.getElementById("filter").addEventListener("input", e => {
+      const q = e.target.value.toLowerCase();
+      document.querySelectorAll("#list li").forEach(li =>
+        li.hidden = !li.firstElementChild.textContent.toLowerCase().includes(q));
+    });
+  </script>
+</body>
+</html>

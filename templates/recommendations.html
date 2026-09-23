@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your recommendations</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <h1>Your top picks</h1>
+    {% if results %}
+      <p class="lede">Based on your {{ count }} ratings.</p>
+      <ol class="results">
+        {% for m in results %}
+        <li>
+          <h2>{{ m.title }}</h2>
+          <p class="meta">{{ m.genres }} · predicted {{ m.score }} / 5</p>
+          <p class="why">{{ m.why }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="lede">We need at least 3 rated movies, and a few of them should be ones others also rated. Add more ratings and try again.</p>
+    {% endif %}
+    <a class="back" href="/">Rate more movies</a>
+  </main>
+</body>
+</html>
